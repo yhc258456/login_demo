@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rachel.logindemo.dao.mapper.ResourceMapperDao">
+
+    <resultMap id="ResourcesMap" type="com.rachel.logindemo.dao.entity.Resources">
+        <id column="id" property="id"/>
+        <result column="pattern" property="pattern"/>
+        <collection property="roles" ofType="com.rachel.logindemo.dao.entity.Role">
+            <id column="roleId" property="id"/>
+            <result column="name" property="name"/>
+            <result column="description" property="description"/>
+        </collection>
+    </resultMap>
+    <select id="getAllResources" resultMap="ResourcesMap">
+        SELECT
+            r.*,
+            re.id AS roleId,
+            re.`name`,
+            re.description
+        FROM resources AS r
+                 LEFT JOIN role_resource AS rr  ON r.id = rr.resource_id
+                 LEFT JOIN role AS re ON re.id = rr.role_id
+    </select>
+
+</mapper>
